@@ -1,0 +1,7 @@
+package bouncer;
+
+message Entry {
+	optional string shortlink = 1;
+	optional string url = 2;
+	optional uint64 createdOn = 3;
+}

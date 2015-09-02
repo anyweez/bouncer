@@ -1,0 +1,1 @@
+protoc proto/entry.proto -o proto/entry.desc
