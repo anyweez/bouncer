@@ -12,3 +12,9 @@ store any longer link with a shortened form, i.e. `to/fb` as a shortcut to Faceb
 server (usually anyone on your LAN) can use the same shortlinks.
 
 And that's about it. Keep it simple.
+
+# Installation
+
+- `apt-get install protobuf-compiler libprotobuf-dev redis-server`
+- `npm install`
+- `node bouncer.js`
