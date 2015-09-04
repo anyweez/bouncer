@@ -6,8 +6,6 @@ var querystring = require("querystring");
 
 var util = require("./util");
 
-var exports = {};
-
 /**
  * index.html handler that renders what the page should like like when no shorturl was
  * provided. The main use case is as an intro page and it's really a secondary page. Most
@@ -103,8 +101,6 @@ exports.redirect = function(request, response, callback) {
     util.get(shortlink, function(err, entry) {
         // If we've got an entry to work with, redirect.
         if (entry != null) {
-            console.log("got an entry: ")
-
             response.writeHead(302, {
                 "Location": entry.url, 
             });
@@ -112,7 +108,6 @@ exports.redirect = function(request, response, callback) {
             callback(response);
         // Otherwise, give the user the ability to create a new entry.
         } else {
-            console.log("no entry");
             var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
 
             util.getAll(function(items) {

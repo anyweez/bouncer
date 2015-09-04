@@ -3,7 +3,7 @@ var jslint = require('gulp-jslint');
 
 gulp.task('default', function() {
 	return gulp.src(["bouncer.js", "routes.js", "util.js"])
-			.pipe(jslint({
-				node: true,
-			}))
+		.pipe(jslint({
+			node: true,
+		}))
 });
