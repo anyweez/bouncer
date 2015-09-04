@@ -16,6 +16,9 @@ exports.stub = function(shortlink, url) {
 }
 
 function Entry(shortlink, url) {
+	if (shortlink == null) throw Error("You must provide a shortlink name."); 
+	if (url == null) throw Error("You must provide a URL for the shortlink.");
+
 	this.shortlink = shortlink;
 	this.url = url;
 	this.createdOn = Date.now();
@@ -27,7 +30,6 @@ var entryPb = new protobuf(fs.readFileSync("./proto/entry.desc"));
  * Create a new shortlink.
  */
 exports.create = function(shortlink, url) {
-	console.log("Adding shortlink [" + shortlink + " = " + url + "]");
 	var entry = new Entry(shortlink, url);
 	var client = redis.createClient();
 

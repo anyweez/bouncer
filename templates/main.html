@@ -12,7 +12,7 @@
 			<input type="text" id="shortlink" name="shortlink" style="width: 150px" value="{{provided_shortlink}}" />
 
 			<label style="margin-left: 30px;" for="shortlink_url">URL:</label>
-			<input type="text" id="shortlink_url" name="shortlink_url" style="width: 400px" />
+			<input type="text" id="shortlink_url" name="shortlink_url" style="width: 400px" value="{{existing_url}}" />
 
 			<input type="submit" value="Save" />
 		</form>
@@ -21,12 +21,6 @@
 
 		<h3>Most popular shortlinks</h3>
 		<table>
-			<th>
-				<tr>
-					<td>Shortlink</td>
-					<td>URL</td>
-				</tr>
-			</th>
 			<tbody>
 				{{#each shortlinks}}
 				<tr>
