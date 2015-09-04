@@ -28,11 +28,14 @@ function router(request, response) {
 		return;
 	}
 
-	console.log(path.pathname);
 	// When no shortlink is provided.
 	//   Ex: Expected path: http://localhost/
 	if (path.pathname == "/") {
 		routes.main(request, response, function(resp) {
+			resp.end();
+		});
+	} else if (path.pathname.indexOf("/public") == 0) {
+		routes.fetchFile(request, response, function(resp) {
 			resp.end();
 		});
 	// Edit an existing shortlink. 

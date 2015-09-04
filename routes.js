@@ -14,9 +14,16 @@ exports.main = function(request, response, callback) {
 	console.log("[Handler] Main");
 
 	var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
-	response.write(template({}));
+	
+	util.getAll(function(items) {
+		var data = {
+			shortlinks: items,
+			provided_shortlink: null,
+		}
 
-	callback(response);
+		response.write(template(data));
+		callback(response);
+	});
 }
 
 exports.edit = function(request, response, callback) {
@@ -69,22 +76,40 @@ exports.redirect = function(request, response, callback) {
 			response.writeHead(302, {
 				"Location": entry.url, 
 			});
+
+			callback(response);
 		// Otherwise, give the user the ability to create a new entry.
 		} else {
 			console.log("no entry");
+			var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
 
-			var template = handlebars.compile(fs.readFileSync("templates/create.html", "utf8"));
-			var data = {
-				shortlink: shortlink,
-			}
+			util.getAll(function(items) {
+				var data = {
+					shortlinks: items,
+					provided_shortlink: shortlink,
+				};
 
-			response.write( template(data) );
+				response.write(template(data));
+				callback(response);
+			});
 		}
-
-		callback(response);
 	});
 }
 
+exports.fetchFile = function(request, response, callback) {
+	var path = url.parse(request.url);
+	try {
+		var fpath = fs.readFileSync(__dirname + path.pathname)		
+		response.writeHead(200);
+		response.write(fpath, "utf8");
+	} catch (e) {
+		response.writeHead(404);
+		console.log(e);
+	}
+
+
+	callback(response);
+}
 
 function isValidShortlink(entry) {
 	if (entry.shortlink == null) return false;

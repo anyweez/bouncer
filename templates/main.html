@@ -1,8 +1,40 @@
 <html>
+	<head>
+		<link rel="stylesheet" href="/public/css/bouncer.css"></link>
+	</head>
+
 	<body>
-		<ul>
-			<li>Create new bounce</li>
-			<li>Edit existing bounce</li>
-		</ul>
+		<h2>Bouncer</h2>
+		<p>Add a name to the URL to create a new shortlink, or provide an existing one to visit the shortlink.</p>
+		<h3>Create new</h3>
+		<form method="post" action="/create" id="new_shortlink">
+			<label for="shortlink">Shortlink:</label>
+			<input type="text" id="shortlink" name="shortlink" style="width: 150px" value="{{provided_shortlink}}" />
+
+			<label style="margin-left: 30px;" for="shortlink_url">URL:</label>
+			<input type="text" id="shortlink_url" name="shortlink_url" style="width: 400px" />
+
+			<input type="submit" value="Save" />
+		</form>
+
+		<hr />
+
+		<h3>Most popular shortlinks</h3>
+		<table>
+			<th>
+				<tr>
+					<td>Shortlink</td>
+					<td>URL</td>
+				</tr>
+			</th>
+			<tbody>
+				{{#each shortlinks}}
+				<tr>
+					<td>{{this.shortlink}}</td>
+					<td>{{this.url}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
 	</body>
 </html>

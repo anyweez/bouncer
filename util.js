@@ -1,6 +1,7 @@
 var redis = require("redis");
 var protobuf = require("node-protobuf");
 var fs = require("fs");
+var async = require("async");
 
 /**
  * Core utility functionality that's invoked by request handlers in the main app. Note
@@ -9,6 +10,10 @@ var fs = require("fs");
  * util.js so that the rest of the app doesn't need to be aware and some of this stuff
  * can change if needed.
  */
+
+exports.stub = function(shortlink, url) {
+	return new Entry(shortlink, url);
+}
 
 function Entry(shortlink, url) {
 	this.shortlink = shortlink;
@@ -61,3 +66,28 @@ exports.get = function(shortlink, callback) {
 	return null;
 }
 
+exports.getAll = function(callback) {
+	var client = redis.createClient(null, null, {
+		return_buffers: true,
+	});
+
+	// Get entries for all shortlinks.
+	client.keys("*", function(err, reply) {
+		var keys = reply.map(function(item) {
+			return item.toString();
+		});
+
+		// Generate a list of functions that retrieve entries, one per shortlink.
+		async.parallel(keys.map(function(item) {
+			return function(db_callback) {
+				exports.get(item, function(err, val) {
+					db_callback(err, val);
+				});
+			};			
+		}),  
+		// Once all have been fetched, execute the callback.
+		function(err, items) {
+			callback(items);
+		});
+	});
+}
