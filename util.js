@@ -25,6 +25,7 @@ var Entry = {
         var newest = {
             shortlink: entry.shortlink,
             url: entry.url,
+            createdOn: Date.now(),
             domain: function (url) {
                 return URL.parse(url).hostname;
             }(entry.url),
@@ -32,14 +33,14 @@ var Entry = {
         };
 
         request(entry.url, function (error, response, body) {
-            if (response.statusCode == 200) {
+            if (response !== undefined && response.statusCode == 200) {
                 var doc = cheerio.load(body, {
                     decodeEntities: true,
                 });
                 console.log(doc('title').text());
                 newest.title = doc('title').text().replace(/[^\x00-\x7F]/g, "");
             } else {
-                console.log("[EntryLookup] Specified URL doesn't exist: " + url);
+                console.log("[EntryLookup] Specified URL doesn't exist: " + entry.url);
                 newest.title = "Unknown";
             }
 
@@ -59,6 +60,7 @@ exports.create = function (entry, callback) {
 
     Entry.new(entry, function (newest) {
         // Store the new object.
+        // TODO: only create a single client (I think this is currently one connection per request).
         var client = redis.createClient();
         client.set(newest.shortlink, entryPb.serialize(newest, "bouncer.Entry"));
 
