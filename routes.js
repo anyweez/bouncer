@@ -35,13 +35,16 @@ exports.edit = function (request, response, callback) {
 
     // Get shortlink entry.
     var path = url.parse(request.url);
-    var shortlink = path.pathname.substring(6);
+    var shortlink = path.pathname.substring('/edit'.length + 1);
 
     util.get(shortlink, function (err, entry) {
-        // Server error
+        // Server error; return an error code and log the problem.
         if (err !== null) {
             response.writeHead(500);
-            // If entry doesn't exist, redirect to /{shortlink}
+            console.log("[Handler] Error: " + err);
+
+            // If entry doesn't exist, redirect to /{shortlink} to create
+            // a new shortlink (editing is only for existing shortlinks).
         } else if (entry === null) {
             response.writeHead(302, {
                 "Location": "/" + shortlink,
@@ -65,6 +68,25 @@ exports.edit = function (request, response, callback) {
     });
 };
 
+exports.debug = function (request, response, callback) {
+    // Get shortlink entry.
+    var path = url.parse(request.url);
+    var shortlink = path.pathname.substring('/debug'.length + 1);
+
+    console.log("[Debug] " + shortlink);
+
+    util.get(shortlink, function (err, entry) {
+        if (err !== null) {
+            console.log("[Debug] Error: " + err);
+            response.writeHead(400);
+        } else {
+            if (entry === null) entry = "<not found>";
+            response.write(JSON.stringify(entry));
+        }
+        callback(response);
+    });
+};
+
 exports.create = function (request, response, callback) {
     console.log("[Handler] Create");
     var body = "";
@@ -78,16 +100,26 @@ exports.create = function (request, response, callback) {
 
         // Create the new entry.
         if (isValidShortlink(decoded)) {
-            util.create(decoded.shortlink, decoded.shortlink_url);
+            try {
+                util.create({
+                    shortlink: decoded.shortlink,
+                    url: decoded.shortlink_url,
+                }, function () {
+                    // Redirect to the edit page for this shortlink. Does this
+                    // feel right from a user perspective?
+                    response.writeHead(302, {
+                        "Location": "/edit/" + decoded.shortlink,
+                    });
 
-            // Redirect to the edit page for this shortlink. Does this
-            // feel right from a user perspective?
-            response.writeHead(302, {
-                "Location": "/edit/" + decoded.shortlink,
-            });
+                    callback(response);
+                });
+            } catch (e) {
+                response.writeHead(400);
+                console.log(e.stack);
+
+                callback(response);
+            }
         }
-
-        callback(response);
     });
 };
 

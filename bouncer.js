@@ -50,6 +50,10 @@ function router(request, response) {
         routes.create(request, response, function (resp) {
             resp.end();
         });
+    } else if (path.pathname.indexOf("/debug") === 0) {
+        routes.debug(request, response, function (resp) {
+            resp.end();
+        });
         // Any time a shortlink is provided
         //   Ex: http://localhost/myfavoritelink
     } else {
