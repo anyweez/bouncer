@@ -1,0 +1,71 @@
+$border-style: 2px solid #46494C;
+$box-shadow-style: 0px 1px 10px #46494C;
+$content-margin: 1%;
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #DCDCDD;
+}
+
+#content {
+    background-color: #4C5C68;
+    border: $border-style;
+    border-width: 2px 0 2px 0;
+    box-shadow: $box-shadow-style;
+    color: #DCDCDD;
+    #shortlink {
+        width: 10%;
+        min-width: 50px;
+    }
+    #shortlink_url {
+        width: 40%;
+        min-width: 200px;
+    }
+    h2 {
+        color: white;
+        font-size: 2em;
+        margin: $content-margin;
+        vertical-align: middle;
+    }
+    form {
+        margin: $content-margin;
+        vertical-align: middle;
+    }
+}
+
+input[type=text] {
+    border: $border-style;
+    padding: 1%;
+    margin: 0;
+    font-size: 1.1em;
+}
+
+input[type=submit] {
+    width: 10%;
+    padding: 1%;
+    font-size: 1.1em;
+    border: $border-style;
+}
+
+ul {
+    padding: 0;
+    margin: 0 1%;
+    .shortlink_block {
+        border: $border-style;
+        list-style-type: none;
+        vertical-align: top;
+        background-color: #C5C3C6;
+        p {
+            margin: 0;
+            padding: 2%;
+        }
+    }
+    h3 {
+        margin: 0;
+        padding: 3% 2%;
+        background-color: #46494C;
+    }
+    a {
+        text-decoration: none;
+        color: white;
+    }
+}

@@ -4,11 +4,13 @@
   "description": "Simple application to save shortlinks on an internal LAN.",
   "main": "bouncer.js",
   "dependencies": {
+    "async": "~1.4.2",
+    "gulp-jslint": "^0.2.2",
     "handlebars": "~4.0.1",
-    "redis": "~1.0.0",
-    "node-protobuf": "~1.2.7",
     "mocha": "~2.3.0",
-    "async": "~1.4.2"
+    "node-normalize-scss": "^1.0.3",
+    "node-protobuf": "~1.2.7",
+    "redis": "~1.0.0"
   },
   "devDependencies": {},
   "scripts": {

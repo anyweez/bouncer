@@ -1,3 +1,4 @@
+/* jslint node: true */
 "use strict";
 var handlebars = require("handlebars");
 var fs = require("fs");
@@ -25,7 +26,7 @@ exports.main = function (request, response, callback) {
         response.write(template(data));
         callback(response);
     });
-}
+};
 
 exports.edit = function (request, response, callback) {
     console.log("[Handler] Edit");
@@ -33,24 +34,24 @@ exports.edit = function (request, response, callback) {
     var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
 
     // Get shortlink entry.
-    var path = url.parse(request.url)
+    var path = url.parse(request.url);
     var shortlink = path.pathname.substring(6);
 
-    util.get(shortlink, function(err, entry) {
+    util.get(shortlink, function (err, entry) {
         // Server error
-        if (err != null) {
+        if (err !== null) {
             response.writeHead(500);
-        // If entry doesn't exist, redirect to /{shortlink}
-        } else if (entry == null) {
+            // If entry doesn't exist, redirect to /{shortlink}
+        } else if (entry === null) {
             response.writeHead(302, {
                 "Location": "/" + shortlink,
-            }); 
+            });
 
             callback(response);
-        // If the shortlink exists, edit.       
+            // If the shortlink exists, edit.       
         } else {
             // Fetch all and render page.
-            util.getAll(function(items) {
+            util.getAll(function (items) {
                 var data = {
                     shortlinks: items,
                     provided_shortlink: shortlink,
@@ -62,17 +63,17 @@ exports.edit = function (request, response, callback) {
             });
         }
     });
-}
+};
 
-exports.create = function(request, response, callback) {
+exports.create = function (request, response, callback) {
     console.log("[Handler] Create");
     var body = "";
 
-    request.on("data", function(data) {
+    request.on("data", function (data) {
         body += data.toString();
     });
 
-    request.on("end", function() {
+    request.on("end", function () {
         var decoded = querystring.parse(body);
 
         // Create the new entry.
@@ -82,15 +83,15 @@ exports.create = function(request, response, callback) {
             // Redirect to the edit page for this shortlink. Does this
             // feel right from a user perspective?
             response.writeHead(302, {
-                "Location": "/edit/" + decoded.shortlink, 
-            })
+                "Location": "/edit/" + decoded.shortlink,
+            });
         }
 
         callback(response);
     });
-}
+};
 
-exports.redirect = function(request, response, callback) {
+exports.redirect = function (request, response, callback) {
     console.log("[Handler] Redirect");
 
     var path = url.parse(request.url);
@@ -98,19 +99,19 @@ exports.redirect = function(request, response, callback) {
 
     // Try to retrieve the shortlink. If it exists, redirect. Otherwise
     // go to setup page.
-    util.get(shortlink, function(err, entry) {
+    util.get(shortlink, function (err, entry) {
         // If we've got an entry to work with, redirect.
-        if (entry != null) {
+        if (entry !== null) {
             response.writeHead(302, {
-                "Location": entry.url, 
+                "Location": entry.url,
             });
 
             callback(response);
-        // Otherwise, give the user the ability to create a new entry.
+            // Otherwise, give the user the ability to create a new entry.
         } else {
             var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
 
-            util.getAll(function(items) {
+            util.getAll(function (items) {
                 var data = {
                     shortlinks: items,
                     provided_shortlink: shortlink,
@@ -121,12 +122,12 @@ exports.redirect = function(request, response, callback) {
             });
         }
     });
-}
+};
 
-exports.fetchFile = function(request, response, callback) {
+exports.fetchFile = function (request, response, callback) {
     var path = url.parse(request.url);
     try {
-        var fpath = fs.readFileSync(__dirname + path.pathname)      
+        var fpath = fs.readFileSync(__dirname + "/public/" + path.pathname);
         response.writeHead(200);
         response.write(fpath, "utf8");
     } catch (e) {
@@ -135,11 +136,11 @@ exports.fetchFile = function(request, response, callback) {
     }
 
     callback(response);
-}
+};
 
 function isValidShortlink(entry) {
-    if (entry.shortlink == null) return false;
-    if (entry.shortlink_url == null) return false;
+    if (entry.shortlink === null) return false;
+    if (entry.shortlink_url === null) return false;
 
     // TODO: do more checking here.
 

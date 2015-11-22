@@ -1,3 +1,4 @@
+/* jslint node: true */
 "use strict";
 var url = require("url");
 var http = require("http");
@@ -32,24 +33,25 @@ function router(request, response) {
         routes.main(request, response, function (resp) {
             resp.end();
         });
-    } else if (path.pathname.indexOf("/public") === 0) {
+        // Static content handler.
+    } else if (path.pathname.indexOf("/static") === 0) {
         routes.fetchFile(request, response, function (resp) {
             resp.end();
         });
-    // Edit an existing shortlink. 
-    //   Ex: Expected path is /edit/{shortlink}
+        // Edit an existing shortlink. 
+        //   Ex: Expected path is /edit/{shortlink}
     } else if (path.pathname.indexOf("/edit") === 0) {
         routes.edit(request, response, function (resp) {
             resp.end();
         });
-    // Create a new shortlink (depends on POST'd parameters, usually from a form).
-    //   Ex: Only matches with /create.
+        // Create a new shortlink (depends on POST'd parameters, usually from a form).
+        //   Ex: Only matches with /create.
     } else if (path.pathname === "/create") {
         routes.create(request, response, function (resp) {
             resp.end();
         });
-    // Any time a shortlink is provided
-    //   Ex: http://localhost/myfavoritelink
+        // Any time a shortlink is provided
+        //   Ex: http://localhost/myfavoritelink
     } else {
         routes.redirect(request, response, function (resp) {
             resp.end();

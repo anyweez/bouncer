@@ -1,36 +1,31 @@
 <html>
-	<head>
-		<title>Bouncer</title>
-		<link rel="stylesheet" href="/public/css/bouncer.css">
-		<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-	</head>
 
-	<body>
-		<h2>Bouncer</h2>
-		<p>Add a name to the URL to create a new shortlink, or provide an existing one to visit the shortlink.</p>
-		<h3>Create new</h3>
-		<form method="post" action="/create" id="new_shortlink">
-			<label for="shortlink">Shortlink:</label>
-			<input type="text" id="shortlink" name="shortlink" style="width: 150px" value="{{provided_shortlink}}" />
+<head>
+    <title>Bouncer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+</head>
 
-			<label style="margin-left: 30px;" for="shortlink_url">URL:</label>
-			<input type="text" id="shortlink_url" name="shortlink_url" style="width: 400px" value="{{existing_url}}" />
+<body>
+    <div id="content">
+        <h2>Bouncer</h2>
+        <form method="post" action="/create" id="new_shortlink">
+            <input type="text" id="shortlink" name="shortlink" placeholder="Shortlink" value="{{provided_shortlink}}" />
+            <input type="text" id="shortlink_url" name="shortlink_url" placeholder="URL" value="{{existing_url}}" />
 
-			<input type="submit" value="Save" />
-		</form>
+            <input type="submit" value="Create" />
+        </form>
+    </div>
 
-		<hr />
+    <ul>
+        {{#each shortlinks}}
+        <li class="shortlink_block">
+            <a href="{{this.url}}"><h3>{{this.shortlink}}</h3></a>
+            <p class="sl_title">Page title</p>
+            <p class="sl_domain">Domain</p>
+        </li>
+        {{/each}}
+    </ul>
+</body>
 
-		<h3>Most popular shortlinks</h3>
-		<table>
-			<tbody>
-				{{#each shortlinks}}
-				<tr>
-					<td>{{this.shortlink}}</td>
-					<td>{{this.url}}</td>
-				</tr>
-				{{/each}}
-			</tbody>
-		</table>
-	</body>
 </html>

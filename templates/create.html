@@ -1,13 +1,17 @@
 <html>
-	<body>
-		<h2>{{ shortlink }}</h2>
-		<div>
-			<form action="/create" method="post">
-				<label for="shortlink_url">URL:</label>
-				<input type="text" id="shortlink_url" name="shortlink_url" />
-				<input type="hidden" id="shortlink" name="shortlink" value="{{ shortlink }}" />
-				<input type="submit" value="Save" />
-			</form>
-		</div>
-	</body>
+
+<head></head>
+
+<body>
+    <h2>{{ shortlink }}</h2>
+    <div>
+        <form action="/create" method="post">
+            <label for="shortlink_url">URL:</label>
+            <input type="text" id="shortlink_url" name="shortlink_url" />
+            <input type="hidden" id="shortlink" name="shortlink" value="{{ shortlink }}" />
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+</body>
+
 </html>
