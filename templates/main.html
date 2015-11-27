@@ -21,8 +21,8 @@
         {{#each shortlinks}}
         <li class="shortlink_block">
             <a href="{{this.url}}"><h3>{{this.shortlink}}</h3></a>
-            <p class="sl_title">Page title</p>
-            <p class="sl_domain">Domain</p>
+            <p class="sl_domain">{{this.domain}}</p>
+            <p class="sl_title">{{this.title}}</p>
         </li>
         {{/each}}
     </ul>
