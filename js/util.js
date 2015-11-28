@@ -66,7 +66,7 @@ exports.create = function (entry, callback) {
 
         callback(newest);
     });
-}
+};
 
 /**
  * Tries to retrieve a shortlink. If the shortlink doesn't exist,
@@ -83,10 +83,10 @@ exports.get = function (shortlink, callback) {
 
     client.get(shortlink, function (err, reply) {
         // If there's an issue, return the error.
-        if (err != null) {
+        if (err !== null) {
             callback(err);
             // If the key doesn't exist, return an empty object.
-        } else if (reply == null) {
+        } else if (reply === null) {
             callback(null, null);
             // Deserialize and return retrieved object.
         } else {
