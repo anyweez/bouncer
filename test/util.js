@@ -131,8 +131,10 @@ describe("util.js", function () {
         });
 
         it("matching shortlink returns valid entry object", function (done) {
+            this.timeout(5000);
             var shortlink = token('mail');
             var url = "https://mail.google.com";
+
             util.create({
                 shortlink: shortlink,
                 url: url,

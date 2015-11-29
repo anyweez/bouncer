@@ -115,8 +115,6 @@ exports.create = function (request, response, callback) {
                 });
             } catch (e) {
                 response.writeHead(400);
-                console.log(e.stack);
-
                 callback(response);
             }
         }

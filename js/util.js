@@ -9,6 +9,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 
 var NAMESPACE = "bouncer";
+var client = redis.createClient();
 
 /**
  * Core utility functionality that's invoked by request handlers in the main app. Note
@@ -70,9 +71,7 @@ exports.create = function (entry, callback) {
 
     Entry.new(entry, function (newest) {
         // Store the new object.
-        // TODO: only create a single client (I think this is currently one connection per request).
-        var client = redis.createClient();
-
+        // TODO: `client` is currently global. Should make this a module-level connection.
         client.set(
             newest.key(),
             entryPb.serialize(newest, "bouncer.Entry")
