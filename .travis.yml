@@ -4,6 +4,7 @@ node_js:
   - "5.0"
 services:
   - redis-server
+  
 # Addons will be installed prior to the build phase.
 # Per Travis instructions here: http://docs.travis-ci.com/user/apt/
 addons:
@@ -12,3 +13,9 @@ addons:
       - protobuf-compiler
       - libprotobuf-dev
       - build-essential
+      # Installing g++ 4.8 per the travis.yml build file on the project:
+      #   https://github.com/fuwaneko/node-protobuf/blob/master/.travis.yml
+      - g++-4.8
+      
+env:
+ - CXX=g++-4.8
