@@ -9,6 +9,7 @@ services:
 
 before_install:
   - npm install
+  - g++ --version
 
 # Addons will be installed prior to the build phase.
 # Per Travis instructions here: http://docs.travis-ci.com/user/apt/
@@ -20,7 +21,6 @@ addons:
       - build-essential
       # Installing g++ 4.8 per the travis.yml build file on the project:
       #   https://github.com/fuwaneko/node-protobuf/blob/master/.travis.yml
-      - g++
       
 env:
  - CXX=g++
