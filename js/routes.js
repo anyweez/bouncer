@@ -28,46 +28,6 @@ exports.main = function (request, response, callback) {
     });
 };
 
-exports.edit = function (request, response, callback) {
-    console.log("[Handler] Edit");
-
-    var template = handlebars.compile(fs.readFileSync("templates/main.html", "utf8"));
-
-    // Get shortlink entry.
-    var path = url.parse(request.url);
-    var shortlink = path.pathname.substring('/edit'.length + 1);
-
-    util.get(shortlink, function (err, entry) {
-        // Server error; return an error code and log the problem.
-        if (err !== null) {
-            response.writeHead(500);
-            console.log("[Handler] Error: " + err);
-
-            // If entry doesn't exist, redirect to /{shortlink} to create
-            // a new shortlink (editing is only for existing shortlinks).
-        } else if (entry === null) {
-            response.writeHead(302, {
-                "Location": "/" + shortlink,
-            });
-
-            callback(response);
-            // If the shortlink exists, edit.       
-        } else {
-            // Fetch all and render page.
-            util.getAll(function (items) {
-                var data = {
-                    shortlinks: items,
-                    provided_shortlink: shortlink,
-                    existing_url: entry.url,
-                };
-
-                response.write(template(data));
-                callback(response);
-            });
-        }
-    });
-};
-
 exports.debug = function (request, response, callback) {
     // Get shortlink entry.
     var path = url.parse(request.url);
@@ -105,10 +65,11 @@ exports.create = function (request, response, callback) {
                     shortlink: decoded.shortlink,
                     url: decoded.shortlink_url,
                 }, function () {
-                    // Redirect to the edit page for this shortlink. Does this
-                    // feel right from a user perspective?
+                    // Redirect to the base page; this used to redirect to the /edit
+                    // endpoint but I got rid of it (didn't feel right or serve much of
+                    // a purpose).
                     response.writeHead(302, {
-                        "Location": "/edit/" + decoded.shortlink,
+                        "Location": "/",
                     });
 
                     callback(response);
