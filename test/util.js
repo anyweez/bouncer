@@ -1,11 +1,14 @@
 /* jslint node: true, mocha: true */
-//var assert = require("assert");
 require("blanket");
-var util = require("../js/util");
 require("../js/routes");
-require("../js/bouncer");
+require("../js/server");
+var util = require("../js/util");
 var redis = require("redis");
 var expect = require("chai").expect;
+
+function token(token) {
+    return "test:" + token;
+}
 
 describe("util.js", function () {
     var client;
@@ -38,7 +41,7 @@ describe("util.js", function () {
 
     describe("#create", function () {
         it("created object has all expected fields set", function (done) {
-            var shortlink = "test:goo";
+            var shortlink = token('goo');
             var url = "https://google.com";
             this.timeout(5000);
 
@@ -47,7 +50,7 @@ describe("util.js", function () {
                     shortlink: shortlink,
                     url: url,
                 }, function (newest) {
-                    expect(newest.shortlink).to.be.equal(shortlink);
+                    expect(newest.shortlink).to.be.equal('goo');
                     expect(newest.url).to.be.equal(url);
                     expect(newest.createdOn).to.be.above(0);
                     expect(newest.domain).to.be.equal("google.com"); // Set dynamically
@@ -62,7 +65,7 @@ describe("util.js", function () {
         });
 
         it("trying to create a shortlink with no url fails", function (done) {
-            var shortlink = "test:shortlink_no_url";
+            var shortlink = token('shortlink_no_url');
 
             try {
                 util.create({
@@ -102,27 +105,56 @@ describe("util.js", function () {
                 done();
             }
         });
+
+        it("trying to create shortlink to non-existant url sets title to 'unknown'", function (done) {
+            try {
+                util.create({
+                    shortlink: token('nonexistent_url'),
+                    url: "htsp://notrealxyz.far",
+                }, function (newest) {
+                    expect(newest.title).is.equal("Unknown");
+                    done();
+                });
+            } catch (e) {
+                throw e;
+            }
+        });
     });
 
     describe("#get", function () {
         it("no matching shortlink returns no error && null", function () {
             // Try to retrieve a key that's very unlikely to exist.
-            util.get("test:doesNotExist", function (err, val) {
-                assert.equal(true, (err == null && val == null));
-            })
+            util.get(token('doesNotExist'), function (err, val) {
+                expect(err).is.null;
+                expect(val).is.null;
+            });
         });
 
         it("matching shortlink returns valid entry object", function (done) {
-            var shortlink = "test:mail";
+            var shortlink = token('mail');
             var url = "https://mail.google.com";
             util.create({
                 shortlink: shortlink,
                 url: url,
             }, function (newest) {
-                assert.equal(true,
-                    newest.shortlink === shortlink &&
-                    newest.url === url);
+                expect(newest.shortlink).is.equal('mail');
+                expect(newest.namespace).is.equal('test');
+                expect(newest.url).is.equal(url);
 
+                util.getFromNamespace("test", "mail", function (err, val) {
+                    expect(err).is.null;
+                    expect(val).is.not.null;
+                    done();
+                });
+            });
+        });
+    });
+
+    describe("#getAll", function () {
+        it("returns an empty list when pattern matches none", function (done) {
+            util.getAllFromNamespace("nonexistent", function (items) {
+                expect(items).to.have.length(0);
+                expect(items).to.be.instanceOf(Array);
                 done();
             });
         });

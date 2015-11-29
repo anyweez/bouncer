@@ -159,7 +159,7 @@ exports.redirect = function (request, response, callback) {
 exports.fetchFile = function (request, response, callback) {
     var path = url.parse(request.url);
     try {
-        var fpath = fs.readFileSync(__dirname + "/public/" + path.pathname);
+        var fpath = fs.readFileSync(__dirname + '/../public/' + path.pathname);
         response.writeHead(200);
         response.write(fpath, "utf8");
     } catch (e) {

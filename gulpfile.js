@@ -28,7 +28,9 @@ gulp.task('test', function () {
     return gulp.src('test/*.js', {
             read: false
         })
-        .pipe(mocha());
+        .pipe(mocha({
+            reporter: 'spec'
+        }));
 });
 
 gulp.task('styles', function () {
