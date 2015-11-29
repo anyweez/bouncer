@@ -38,12 +38,6 @@ function router(request, response) {
         routes.fetchFile(request, response, function (resp) {
             resp.end();
         });
-        // Edit an existing shortlink. 
-        //   Ex: Expected path is /edit/{shortlink}
-    } else if (path.pathname.indexOf("/edit") === 0) {
-        routes.edit(request, response, function (resp) {
-            resp.end();
-        });
         // Create a new shortlink (depends on POST'd parameters, usually from a form).
         //   Ex: Only matches with /create.
     } else if (path.pathname === "/create") {
