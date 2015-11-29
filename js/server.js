@@ -63,13 +63,40 @@ function router(request, response) {
     }
 }
 
-/**
- * Initialize a server that uses the router() function to
- * process and route requests.
- */
+function Server(conf) {
+    var server = {
+        http: null,
+        config: conf || {},
+        /**
+         * Initialize the server and have it listen on the designated port.
+         */
+        init: function (callback) {
+            // Setup important configurations.
+            this.config.port = this.config.port || PORT;
 
-var server = http.createServer(router);
+            // Initialize the actual HTTP server.
+            this.http = http.createServer(router);
+            this.http.listen(this.config.port || PORT, function () {
+                callback();
+            }.bind(this));
+        },
+        /**
+         * Close the server
+         */
+        close: function (callback) {
+            this.http.close(callback);
+        },
+    };
 
-server.listen(PORT, function () {
-    console.log("Server is listening on port " + PORT);
-});
+    return server;
+}
+
+module.exports = {
+    /**
+     * Initialize a server that uses the router() function to
+     * process and route requests.
+     */
+    createServer: function (conf) {
+        return Server(conf);
+    },
+};

@@ -6,4 +6,5 @@ message Entry {
 	optional uint64 createdOn = 3;
     optional string domain = 4;
     optional string title = 5;
+    optional string namespace = 6;
 }

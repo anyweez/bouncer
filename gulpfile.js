@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var jslint = require('gulp-jslint');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
+var mocha = require('gulp-mocha');
 
 var paths = { in : {
         templates: './templates/*.html',
@@ -14,12 +15,21 @@ var paths = { in : {
     },
 };
 
-gulp.task('default', ['styles']);
+gulp.task('default', ['styles', 'test']);
 
 gulp.task('lint', function () {
     return gulp.src(["bouncer.js", "routes.js", "util.js"])
         .pipe(jslint({
             node: true,
+        }));
+});
+
+gulp.task('test', function () {
+    return gulp.src('test/*.js', {
+            read: false
+        })
+        .pipe(mocha({
+            reporter: 'spec'
         }));
 });
 
