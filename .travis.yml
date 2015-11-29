@@ -10,6 +10,9 @@ services:
 before_install:
   - npm install
   - g++ --version
+  
+after_script:
+  - codeclimate-test-reporter < converage.lcov
 
 # Addons will be installed prior to the build phase.
 # Per Travis instructions here: http://docs.travis-ci.com/user/apt/
@@ -24,6 +27,8 @@ addons:
       # Installing g++ 4.8 per the travis.yml build file on the project:
       #   https://github.com/fuwaneko/node-protobuf/blob/master/.travis.yml
       - g++-4.8
+  code_climate:
+    - repo_token: c108d2c28b619930d079b474db10440474e6a02fa9c7391939bb847b7ac19801
       
 env:
  - CXX=g++-4.8
