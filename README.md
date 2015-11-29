@@ -1,4 +1,7 @@
 # Bouncer
+[![Build Status](https://travis-ci.org/anyweez/bouncer.svg?branch=master)](https://travis-ci.org/anyweez/bouncer)
+[![Test Coverage](https://codeclimate.com/github/anyweez/bouncer/badges/coverage.svg)](https://codeclimate.com/github/anyweez/bouncer/coverage)
+[![Code Climate](https://codeclimate.com/github/anyweez/bouncer/badges/gpa.svg)](https://codeclimate.com/github/anyweez/bouncer)
 
 Bouncer is a simple application for saving shortlinks on an internal LAN. It's written as a NodeJS application
 and currently depends on Redis for durable storage.

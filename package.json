@@ -1,44 +1,46 @@
 {
-    "name": "bouncer",
-    "version": "0.0.0",
-    "description": "Simple application to save shortlinks on an internal LAN.",
-    "dependencies": {
-        "async": "~1.4.2",
-        "blanket": "^1.2.1",
-        "chai": "^3.4.1",
-        "cheerio": "^0.19.0",
-        "gulp-blanket-mocha": "0.0.4",
-        "gulp-jslint": "^0.2.2",
-        "gulp-mocha": "^2.2.0",
-        "handlebars": "~4.0.1",
-        "mocha": "~2.3.0",
-        "node-normalize-scss": "^1.0.3",
-        "node-protobuf": "~1.2.7",
-        "redis": "~1.0.0",
-        "request": "^2.67.0"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "test": "clear; mocha; mocha --require blanket -R html-cov > coverage.html",
-        "start": "node js/bouncer.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/luke-segars/bouncer.git"
-    },
-    "config": {
-        "blanket": {
-            "pattern": [
+  "name": "bouncer",
+  "version": "0.0.0",
+  "description": "Simple application to save shortlinks on an internal LAN.",
+  "dependencies": {
+    "async": "~1.4.2",
+    "blanket": "^1.2.1",
+    "chai": "^3.4.1",
+    "cheerio": "^0.19.0",
+    "codeclimate-test-reporter": "^0.1.1",
+    "gulp-blanket-mocha": "0.0.4",
+    "gulp-jslint": "^0.2.2",
+    "gulp-mocha": "^2.2.0",
+    "handlebars": "~4.0.1",
+    "mocha": "~2.3.0",
+    "mocha-lcov-reporter": "^1.0.0",
+    "node-normalize-scss": "^1.0.3",
+    "node-protobuf": "~1.2.7",
+    "redis": "~1.0.0",
+    "request": "^2.67.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha; mocha --require blanket -R html-cov > coverage.html; mocha --require blanket -R mocha-lcov-reporter > coverage.lcov",
+    "start": "node js/bouncer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/luke-segars/bouncer.git"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
         ""
       ],
-            "data-cover-never": [
+      "data-cover-never": [
         "node_modules"
       ]
-        }
-    },
-    "author": "anyweez",
-    "license": "BSD-2-Clause",
-    "bugs": {
-        "url": "https://github.com/luke-segars/bouncer/issues"
     }
+  },
+  "author": "anyweez",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/luke-segars/bouncer/issues"
+  }
 }
