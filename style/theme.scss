@@ -1,4 +1,4 @@
-$border-style: 2px solid #46494C;
+$border-style: 1px solid #46494C;
 $box-shadow-style: 0px 1px 10px #46494C;
 $content-margin: 1%;
 body {
@@ -25,6 +25,7 @@ body {
         font-size: 2em;
         margin: $content-margin;
         vertical-align: middle;
+        letter-spacing: .08em;
     }
     form {
         margin: $content-margin;
@@ -49,6 +50,7 @@ input[type=submit] {
 ul {
     padding: 0;
     margin: 0 1%;
+    text-align: justify;
     .shortlink_block {
         border: $border-style;
         list-style-type: none;
@@ -58,11 +60,14 @@ ul {
             margin: 0;
             padding: 2%;
         }
+        width: 18%;
+        min-height: 120px;
     }
     h3 {
         margin: 0;
         padding: 3% 2%;
         background-color: #46494C;
+        letter-spacing: .08em;
     }
     a {
         text-decoration: none;
